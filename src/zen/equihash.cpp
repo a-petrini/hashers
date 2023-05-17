@@ -12,12 +12,9 @@
 // NDSS ’16, 21-24 February 2016, San Diego, CA, USA
 // https://www.internetsociety.org/sites/default/files/blogs-media/equihash-asymmetric-proof-of-work-based-generalized-birthday-problem.pdf
 
-#if defined(HAVE_CONFIG_H)
-#include "config/bitcoin-config.h"
-#endif
 
-#include "compat/endian.h"
-#include "crypto/equihash.h"
+#include "zen/endian.h"
+#include "zen/equihash.h"
 #include "util.h"
 
 #include <algorithm>

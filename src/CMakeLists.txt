@@ -46,11 +46,14 @@ add_executable(onetest)
 
 target_include_directories(onetest PRIVATE
 	"${PROJECT_BINARY_DIR}"
+  zen
+  .
 )
 
 configure_file(configuration.h.in configuration.h)
 target_sources(onetest PRIVATE
 	main.cpp
+  zen/sha1.cpp
 )
 
 # target_link_libraries(onetest PRIVATE

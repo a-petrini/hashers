@@ -9,12 +9,6 @@
 
 #include "byteswap.h"
 
-#if defined(HAVE_ENDIAN_H)
-#include <endian.h>
-#elif defined(HAVE_SYS_ENDIAN_H)
-#include <sys/endian.h>
-#endif
-
 #if defined(WORDS_BIGENDIAN)
 
 #if HAVE_DECL_HTOBE16 == 0
