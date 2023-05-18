@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CRYPTO_COMMON_H
-#define BITCOIN_CRYPTO_COMMON_H
+#ifndef ZEN_CRYPTO_COMMON_H
+#define ZEN_CRYPTO_COMMON_H
 
 #include <stdint.h>
 #include <cstring>
@@ -78,4 +78,4 @@ void static inline WriteBE64(unsigned char* ptr, uint64_t x)
 
 } // namespace zen
 
-#endif // BITCOIN_CRYPTO_COMMON_H
+#endif // ZEN_CRYPTO_COMMON_H

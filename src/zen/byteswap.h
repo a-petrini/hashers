@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_COMPAT_BYTESWAP_H
-#define BITCOIN_COMPAT_BYTESWAP_H
+#ifndef ZEN_COMPAT_BYTESWAP_H
+#define ZEN_COMPAT_BYTESWAP_H
 
 #include <stdint.h>
 
@@ -40,4 +40,4 @@ inline uint64_t bswap_64(uint64_t x)
 
 } // namespace zen
 
-#endif // BITCOIN_COMPAT_BYTESWAP_H
+#endif // ZEN_COMPAT_BYTESWAP_H

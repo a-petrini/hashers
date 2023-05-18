@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CRYPTO_SHA256_H
-#define BITCOIN_CRYPTO_SHA256_H
+#ifndef ZEN_CRYPTO_SHA256_H
+#define ZEN_CRYPTO_SHA256_H
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -33,4 +33,4 @@ private:
 
 } // namespace zen
 
-#endif // BITCOIN_CRYPTO_SHA256_H
+#endif // ZEN_CRYPTO_SHA256_H

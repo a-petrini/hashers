@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_COMPAT_ENDIAN_H
-#define BITCOIN_COMPAT_ENDIAN_H
+#ifndef ZEN_COMPAT_ENDIAN_H
+#define ZEN_COMPAT_ENDIAN_H
 
 #include <stdint.h>
 
@@ -187,4 +187,4 @@ inline uint64_t le64toh(uint64_t little_endian_64bits)
 
 } // namespace zen
 
-#endif // BITCOIN_COMPAT_ENDIAN_H
+#endif // ZEN_COMPAT_ENDIAN_H

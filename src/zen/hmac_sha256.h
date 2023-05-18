@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CRYPTO_HMAC_SHA256_H
-#define BITCOIN_CRYPTO_HMAC_SHA256_H
+#ifndef ZEN_CRYPTO_HMAC_SHA256_H
+#define ZEN_CRYPTO_HMAC_SHA256_H
 
 #include "zen/sha256.h"
 
@@ -14,8 +14,8 @@
 class CHMAC_SHA256
 {
 private:
-    CSHA256 outer;
-    CSHA256 inner;
+    zen::CSHA256 outer;
+    zen::CSHA256 inner;
 
 public:
     static const size_t OUTPUT_SIZE = 32;
@@ -29,4 +29,4 @@ public:
     void Finalize(unsigned char hash[OUTPUT_SIZE]);
 };
 
-#endif // BITCOIN_CRYPTO_HMAC_SHA256_H
+#endif // ZEN_CRYPTO_HMAC_SHA256_H
