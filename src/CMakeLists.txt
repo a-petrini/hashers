@@ -53,6 +53,7 @@ target_include_directories(onetest PRIVATE
 configure_file(configuration.h.in configuration.h)
 target_sources(onetest PRIVATE
 	main.cpp
+  utilbellebelle.cpp
   zen/sha1.cpp
 )
 
