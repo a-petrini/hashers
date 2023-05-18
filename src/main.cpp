@@ -4,9 +4,14 @@
 
 #include "configuration.h"
 #include "utilbellebelle.hpp"
+
 #include "zen/sha1.h"
 #include "zen/sha256.h"
 #include "zen/sha512.h"
+
+#include "zcash/sha1.h"
+#include "zcash/sha256.h"
+#include "zcash/sha512.h"
 
 
 ////// Reference results
@@ -64,6 +69,32 @@ int main(int argc, char ** argv) {
     zenSha512Hasher.Finalize(zenSha512Output.data());
     std::cout << "zen SHA-512: ";
     printShaOut(zenSha512Output);
+
+    //////////////////
+
+    //// zcash SHA-1 hasher
+    std::vector<unsigned char> zcashSha1Output(zcash::CSHA1::OUTPUT_SIZE); // 20
+    zcash::CSHA1 zcashSha1Hasher;
+    zcashSha1Hasher = zcashSha1Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
+    zcashSha1Hasher.Finalize(zcashSha1Output.data());
+    std::cout << "zcash SHA-1:   ";
+    printShaOut(zcashSha1Output);
+
+    //// zcash SHA-256 hasher
+    std::vector<unsigned char> zcashSha256Output(zcash::CSHA256::OUTPUT_SIZE); // 32
+    zcash::CSHA256 zcashSha256Hasher;
+    zcashSha256Hasher = zcashSha256Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
+    zcashSha256Hasher.Finalize(zcashSha256Output.data());
+    std::cout << "zcash SHA-256: ";
+    printShaOut(zcashSha256Output);
+
+    //// zcash SHA-512 hasher
+    std::vector<unsigned char> zcashSha512Output(zcash::CSHA512::OUTPUT_SIZE); // 64
+    zcash::CSHA512 zcashSha512Hasher;
+    zcashSha512Hasher = zcashSha512Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
+    zcashSha512Hasher.Finalize(zcashSha512Output.data());
+    std::cout << "zcash SHA-512: ";
+    printShaOut(zcashSha512Output);
 
     return 0;
 }

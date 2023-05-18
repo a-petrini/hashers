@@ -57,6 +57,9 @@ target_sources(onetest PRIVATE
   zen/sha1.cpp
   zen/sha256.cpp
   zen/sha512.cpp
+  zcash/sha1.cpp
+  zcash/sha256.cpp
+  zcash/sha512.cpp
 )
 
 # target_link_libraries(onetest PRIVATE
