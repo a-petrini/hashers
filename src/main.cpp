@@ -9,7 +9,6 @@
 #include "zen/sha512.h"
 
 
-
 ////// Reference results
 // const char * exampleData {"The quick brown fox jumps over the lazy dog\n"}; // length = 44
 // Evaluated on https://emn178.github.io/online-tools/sha1.html
@@ -43,24 +42,24 @@ int main(int argc, char ** argv) {
     }
 
     //// zen SHA-1 hasher
-    std::vector<unsigned char> zenSha1Output(CSHA1::OUTPUT_SIZE); // 20
-    CSHA1 zenSha1Hasher;
+    std::vector<unsigned char> zenSha1Output(zen::CSHA1::OUTPUT_SIZE); // 20
+    zen::CSHA1 zenSha1Hasher;
     zenSha1Hasher = zenSha1Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zenSha1Hasher.Finalize(zenSha1Output.data());
     std::cout << "zen SHA-1:   ";
     printShaOut(zenSha1Output);
 
     //// zen SHA-256 hasher
-    std::vector<unsigned char> zenSha256Output(CSHA256::OUTPUT_SIZE); // 32
-    CSHA256 zenSha256Hasher;
+    std::vector<unsigned char> zenSha256Output(zen::CSHA256::OUTPUT_SIZE); // 32
+    zen::CSHA256 zenSha256Hasher;
     zenSha256Hasher = zenSha256Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zenSha256Hasher.Finalize(zenSha256Output.data());
     std::cout << "zen SHA-256: ";
     printShaOut(zenSha256Output);
 
     //// zen SHA-512 hasher
-    std::vector<unsigned char> zenSha512Output(CSHA512::OUTPUT_SIZE); // 64
-    CSHA512 zenSha512Hasher;
+    std::vector<unsigned char> zenSha512Output(zen::CSHA512::OUTPUT_SIZE); // 64
+    zen::CSHA512 zenSha512Hasher;
     zenSha512Hasher = zenSha512Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zenSha512Hasher.Finalize(zenSha512Output.data());
     std::cout << "zen SHA-512: ";

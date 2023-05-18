@@ -8,6 +8,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+namespace zen {
+
 /** A hasher class for SHA-512. */
 class CSHA512
 {
@@ -24,5 +26,7 @@ public:
     void Finalize(unsigned char hash[OUTPUT_SIZE]);
     CSHA512& Reset();
 };
+
+} // namespace zen
 
 #endif // BITCOIN_CRYPTO_SHA512_H

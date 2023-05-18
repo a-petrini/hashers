@@ -7,9 +7,7 @@
 
 #include <stdint.h>
 
-#if defined(HAVE_BYTESWAP_H)
-#include <byteswap.h>
-#endif
+namespace zen {
 
 #if HAVE_DECL_BSWAP_16 == 0
 inline uint16_t bswap_16(uint16_t x)
@@ -39,5 +37,7 @@ inline uint64_t bswap_64(uint64_t x)
           | ((x & 0x00000000000000ffull) << 56));
 }
 #endif // HAVE_DECL_BSWAP64
+
+} // namespace zen
 
 #endif // BITCOIN_COMPAT_BYTESWAP_H

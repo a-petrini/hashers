@@ -9,7 +9,7 @@
 #include <string.h>
 
 // Internal implementation code.
-namespace
+namespace zen
 {
 /// Internal SHA-512 implementation.
 namespace sha512
@@ -146,8 +146,6 @@ void Transform(uint64_t* s, const unsigned char* chunk)
 
 } // namespace sha512
 
-} // namespace
-
 
 ////// SHA-512
 
@@ -205,3 +203,5 @@ CSHA512& CSHA512::Reset()
     sha512::Initialize(s);
     return *this;
 }
+
+} // namespace zen

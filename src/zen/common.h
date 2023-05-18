@@ -9,6 +9,7 @@
 #include <cstring>
 #include "endian.h"
 
+namespace zen {
 
 uint16_t static inline ReadLE16(const unsigned char* ptr)
 {
@@ -74,5 +75,7 @@ void static inline WriteBE64(unsigned char* ptr, uint64_t x)
     uint64_t v = htobe64(x);
     memcpy(ptr, (char*)&v, 8);
 }
+
+} // namespace zen
 
 #endif // BITCOIN_CRYPTO_COMMON_H

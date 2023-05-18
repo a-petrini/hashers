@@ -9,7 +9,7 @@
 #include <string.h>
 
 // Internal implementation code.
-namespace
+namespace zen
 {
 /// Internal SHA-1 implementation.
 namespace sha1
@@ -142,7 +142,6 @@ void Transform(uint32_t* s, const unsigned char* chunk)
 
 } // namespace sha1
 
-} // namespace
 
 ////// SHA1
 
@@ -197,3 +196,5 @@ CSHA1& CSHA1::Reset()
     sha1::Initialize(s);
     return *this;
 }
+
+} // namespace zen

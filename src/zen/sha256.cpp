@@ -10,7 +10,7 @@
 #include <stdexcept>
 
 // Internal implementation code.
-namespace
+namespace zen
 {
 /// Internal SHA-256 implementation.
 namespace sha256
@@ -129,7 +129,7 @@ void Transform(uint32_t* s, const unsigned char* chunk)
 }
 
 } // namespace sha256
-} // namespace
+
 
 
 ////// SHA-256
@@ -197,3 +197,5 @@ CSHA256& CSHA256::Reset()
     sha256::Initialize(s);
     return *this;
 }
+
+} // namespace zen
