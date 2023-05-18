@@ -55,6 +55,8 @@ target_sources(onetest PRIVATE
 	main.cpp
   utilbellebelle.cpp
   zen/sha1.cpp
+  zen/sha256.cpp
+  zen/sha512.cpp
 )
 
 # target_link_libraries(onetest PRIVATE
