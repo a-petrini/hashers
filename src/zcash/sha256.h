@@ -2,7 +2,6 @@
 // Copyright (c) 2016-2023 The Zcash developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php .
-
 #pragma once
 
 #include <stdint.h>

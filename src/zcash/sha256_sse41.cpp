@@ -6,8 +6,7 @@
 #include "zcash/sha256.h"
 #include "zcash/common.h"
 
-namespace sha256d64_sse41 {
-namespace {
+namespace zcash::sha256d64_sse41 {
 
 __m128i inline K(uint32_t x) { return _mm_set1_epi32(x); }
 
@@ -57,8 +56,6 @@ void inline Write4(unsigned char* out, int offset, __m128i v) {
     WriteLE32(out + 32 + offset, _mm_extract_epi32(v, 2));
     WriteLE32(out + 64 + offset, _mm_extract_epi32(v, 1));
     WriteLE32(out + 96 + offset, _mm_extract_epi32(v, 0));
-}
-
 }
 
 void Transform_4way(unsigned char* out, const unsigned char* in)
@@ -312,6 +309,6 @@ void Transform_4way(unsigned char* out, const unsigned char* in)
     Write4(out, 28, Add(h, K(0x5be0cd19ul)));
 }
 
-}
+} // namespace zcash::sha256d64_sse41
 
 #endif

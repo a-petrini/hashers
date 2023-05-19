@@ -1,3 +1,5 @@
 // the configured options and settings for hashash
 #define HashingFunctions_VERSION_MAJOR @HashingFunctions_VERSION_MAJOR@
 #define HashingFunctions_VERSION_MINOR @HashingFunctions_VERSION_MINOR@
+
+#define USE_ASM
