@@ -13,6 +13,10 @@
 #include "zcash/sha256.h"
 #include "zcash/sha512.h"
 
+#include "openssl/sha.h"
+#include "openssl/evp.h"
+#include "openssl/err.h"
+
 
 ////// Reference results
 // const char * exampleData {"The quick brown fox jumps over the lazy dog\n"}; // length = 44
@@ -51,7 +55,7 @@ int main(int argc, char ** argv) {
     zen::CSHA1 zenSha1Hasher;
     zenSha1Hasher = zenSha1Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zenSha1Hasher.Finalize(zenSha1Output.data());
-    std::cout << "zen SHA-1:   ";
+    std::cout << "zen SHA-1:       ";
     printShaOut(zenSha1Output);
 
     //// zen SHA-256 hasher
@@ -59,7 +63,7 @@ int main(int argc, char ** argv) {
     zen::CSHA256 zenSha256Hasher;
     zenSha256Hasher = zenSha256Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zenSha256Hasher.Finalize(zenSha256Output.data());
-    std::cout << "zen SHA-256: ";
+    std::cout << "zen SHA-256:     ";
     printShaOut(zenSha256Output);
 
     //// zen SHA-512 hasher
@@ -67,7 +71,7 @@ int main(int argc, char ** argv) {
     zen::CSHA512 zenSha512Hasher;
     zenSha512Hasher = zenSha512Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zenSha512Hasher.Finalize(zenSha512Output.data());
-    std::cout << "zen SHA-512: ";
+    std::cout << "zen SHA-512:     ";
     printShaOut(zenSha512Output);
 
     //////////////////
@@ -77,7 +81,7 @@ int main(int argc, char ** argv) {
     zcash::CSHA1 zcashSha1Hasher;
     zcashSha1Hasher = zcashSha1Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zcashSha1Hasher.Finalize(zcashSha1Output.data());
-    std::cout << "zcash SHA-1:   ";
+    std::cout << "zcash SHA-1:     ";
     printShaOut(zcashSha1Output);
 
     //// zcash SHA-256 hasher
@@ -85,7 +89,7 @@ int main(int argc, char ** argv) {
     zcash::CSHA256 zcashSha256Hasher;
     zcashSha256Hasher = zcashSha256Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zcashSha256Hasher.Finalize(zcashSha256Output.data());
-    std::cout << "zcash SHA-256: ";
+    std::cout << "zcash SHA-256:   ";
     printShaOut(zcashSha256Output);
 
     //// zcash SHA-512 hasher
@@ -93,8 +97,53 @@ int main(int argc, char ** argv) {
     zcash::CSHA512 zcashSha512Hasher;
     zcashSha512Hasher = zcashSha512Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zcashSha512Hasher.Finalize(zcashSha512Output.data());
-    std::cout << "zcash SHA-512: ";
+    std::cout << "zcash SHA-512:   ";
     printShaOut(zcashSha512Output);
+
+    //////////////////
+
+    bool retVal = false;
+    EVP_MD_CTX   *mdctx = nullptr;
+    EVP_MD *openssl_sha1_md = nullptr, *openssl_sha256_md = nullptr, *openssl_sha512_md = nullptr;
+    unsigned int mdLength = 0;
+
+    mdctx = EVP_MD_CTX_new();
+    //// OpenSSL SHA-1 hasher
+    std::vector<unsigned char> openSSLSha1Output(EVP_MAX_MD_SIZE);    // 64
+    openssl_sha1_md   = EVP_MD_fetch(NULL, "SHA-1",   NULL);                    if (!openssl_sha1_md)   { std::cout << "error 01" << std::endl; std::exit(-1); }
+    retVal = EVP_DigestInit_ex2(mdctx, openssl_sha1_md,   NULL);                if (!retVal)            { std::cout << "error 02" << std::endl; std::exit(-1); }
+    retVal = EVP_DigestUpdate(mdctx, filebuffer.data(), filebuffer.size());     if (!retVal)            { std::cout << "error 03" << std::endl; std::exit(-1); }
+    retVal = EVP_DigestFinal_ex(mdctx, openSSLSha1Output.data(), &mdLength);    if (!retVal)            { std::cout << "error 04" << std::endl; std::exit(-1); }
+    openSSLSha1Output.resize(mdLength);
+    std::cout << "OpenSSL SHA-1:   ";
+    printShaOut(openSSLSha1Output);
+
+    EVP_MD_CTX_reset(mdctx);
+    //// OpenSSL SHA-256 hasher
+    std::vector<unsigned char> openSSLSha256Output(EVP_MAX_MD_SIZE);  // 64
+    openssl_sha256_md = EVP_MD_fetch(NULL, "SHA-256", NULL);                    if (!openssl_sha256_md) { std::cout << "error 05" << std::endl; std::exit(-1); }
+    retVal = EVP_DigestInit_ex2(mdctx, openssl_sha256_md, NULL);                if (!retVal)            { std::cout << "error 06" << std::endl; std::exit(-1); }
+    retVal = EVP_DigestUpdate(mdctx, filebuffer.data(), filebuffer.size());     if (!retVal)            { std::cout << "error 07" << std::endl; std::exit(-1); }
+    retVal = EVP_DigestFinal_ex(mdctx, openSSLSha256Output.data(), &mdLength);  if (!retVal)            { std::cout << "error 08" << std::endl; std::exit(-1); }
+    openSSLSha256Output.resize(mdLength);
+    std::cout << "OpenSSL SHA-256: ";
+    printShaOut(openSSLSha256Output);
+
+    EVP_MD_CTX_reset(mdctx);
+    //// OpenSSL SHA-512 hasher
+    std::vector<unsigned char> openSSLSha512Output(EVP_MAX_MD_SIZE);  // 64
+    openssl_sha512_md = EVP_MD_fetch(NULL, "SHA-512", NULL);                    if (!openssl_sha512_md) { std::cout << "error 09" << std::endl; std::exit(-1); }
+    retVal = EVP_DigestInit_ex2(mdctx, openssl_sha512_md, NULL);                if (!retVal)            { std::cout << "error 10" << std::endl; std::exit(-1); }
+    retVal = EVP_DigestUpdate(mdctx, filebuffer.data(), filebuffer.size());     if (!retVal)            { std::cout << "error 11" << std::endl; std::exit(-1); }
+    retVal = EVP_DigestFinal_ex(mdctx, openSSLSha512Output.data(), &mdLength);  if (!retVal)            { std::cout << "error 12" << std::endl; std::exit(-1); }
+    openSSLSha512Output.resize(mdLength);
+    std::cout << "OpenSSL SHA-512: ";
+    printShaOut(openSSLSha512Output);
+
+    EVP_MD_free(openssl_sha512_md);
+    EVP_MD_free(openssl_sha256_md);
+    EVP_MD_free(openssl_sha1_md);
+    EVP_MD_CTX_free(mdctx);
 
     return 0;
 }
