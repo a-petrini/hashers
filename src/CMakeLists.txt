@@ -41,7 +41,10 @@ add_subdirectory("extern/google-benchmark")
 
 ###################
 
+configure_file(configuration.h.in configuration.h)
+
 add_executable(onetest)
+add_executable(oneperf)
 
 target_include_directories(onetest PRIVATE
 	"${PROJECT_BINARY_DIR}"
@@ -49,11 +52,17 @@ target_include_directories(onetest PRIVATE
   zcash
   .
 )
+target_include_directories(oneperf PRIVATE
+	"${PROJECT_BINARY_DIR}"
+  zen
+  zcash
+  .
+)
 
-configure_file(configuration.h.in configuration.h)
-target_sources(onetest PRIVATE
-	main.cpp
-  utilbellebelle.cpp
+set(COMMON_SRC
+  openssl_hashers.cpp
+  zen_hashers.cpp
+  zcash_hashers.cpp
   zen/sha1.cpp
   zen/sha256.cpp
   zen/sha512.cpp
@@ -63,10 +72,25 @@ target_sources(onetest PRIVATE
   zcash/sha512.cpp
 )
 
+target_sources(onetest PRIVATE
+	main.cpp
+  utilbellebelle.cpp
+  ${COMMON_SRC}
+)
+target_sources(oneperf PRIVATE
+	profile_run.cpp
+  utilbellebelle.cpp
+  ${COMMON_SRC}
+)
+
 target_link_libraries(onetest PRIVATE
   ssl
   crypto
   benchmark
 )
-
+target_link_libraries(oneperf PRIVATE
+  ssl
+  crypto
+  benchmark
+)
 
