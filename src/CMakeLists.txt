@@ -12,9 +12,9 @@
 
 ###
 # OpenSSL build (from https://github.com/viaduck/openssl-cmake)
-# 1. Add OpenSSL-CMake as a submodule to your Git project using git submodule  add <URL> external/openssl-cmake   <<-- in hashing/src
+# 1. Add OpenSSL-CMake as a submodule to your Git project using git submodule add <URL> src/extern/openssl-cmake   <<-- in hashing/src
 # 2. Initialize the submodule using git submodule update --init
-# 3. In your CMakeLists.txt include the directory using add_subdirectory(external/openssl-cmake)
+# 3. In your CMakeLists.txt include the directory using add_subdirectory(src/extern/openssl-cmake)
 # 4. Link against ssl and crypto targets, which will also include the headers
 #
 # cmake -DOPENSSL_BUILD_VERSION=3.1.0 -DBUILD_OPENSSL=ON ../src/
@@ -34,7 +34,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_subdirectory("external/openssl-cmake")
+set(BENCHMARK_ENABLE_TESTING OFF)   # Disable Google Test for Google Benchmark
+
+add_subdirectory("extern/openssl-cmake")
+add_subdirectory("extern/google-benchmark")
 
 ###################
 
@@ -43,6 +46,7 @@ add_executable(onetest)
 target_include_directories(onetest PRIVATE
 	"${PROJECT_BINARY_DIR}"
   zen
+  zcash
   .
 )
 
@@ -62,6 +66,7 @@ target_sources(onetest PRIVATE
 target_link_libraries(onetest PRIVATE
   ssl
   crypto
+  benchmark
 )
 
 
