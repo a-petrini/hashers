@@ -16,8 +16,6 @@ std::vector<unsigned char> zen_sha1_hasher(const std::vector<char> & filebuffer)
     zen::CSHA1 zenSha1Hasher;
     zenSha1Hasher = zenSha1Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zenSha1Hasher.Finalize(zenSha1Output.data());
-    std::cout << TXT_BICYA << "zen SHA-1:       " << TXT_NORML;
-    printShaOut(zenSha1Output);
     return zenSha1Output;
 }
 
@@ -27,8 +25,6 @@ std::vector<unsigned char> zen_sha256_hasher(const std::vector<char> & filebuffe
     zen::CSHA256 zenSha256Hasher;
     zenSha256Hasher = zenSha256Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zenSha256Hasher.Finalize(zenSha256Output.data());
-    std::cout << TXT_BICYA << "zen SHA-256:     " << TXT_NORML;
-    printShaOut(zenSha256Output);
     return zenSha256Output;
 }
 
@@ -38,7 +34,5 @@ std::vector<unsigned char> zen_sha512_hasher(const std::vector<char> & filebuffe
     zen::CSHA512 zenSha512Hasher;
     zenSha512Hasher = zenSha512Hasher.Write(reinterpret_cast<const unsigned char*>(filebuffer.data()), filebuffer.size());
     zenSha512Hasher.Finalize(zenSha512Output.data());
-    std::cout << TXT_BICYA << "zen SHA-512:     " << TXT_NORML;
-    printShaOut(zenSha512Output);
     return zenSha512Output;
 }

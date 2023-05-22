@@ -22,8 +22,6 @@ std::vector<unsigned char> openssl_sha1_hasher(EVP_MD_CTX * const mdctx, const s
     EVP_DigestUpdate(mdctx, filebuffer.data(), filebuffer.size());
     EVP_DigestFinal_ex(mdctx, openSSLSha1Output.data(), &mdLength);
     openSSLSha1Output.resize(mdLength);
-    std::cout << TXT_BICYA << "OpenSSL SHA-1:   " << TXT_NORML;
-    printShaOut(openSSLSha1Output);
     EVP_MD_free(openssl_sha1_md);
     return openSSLSha1Output;
 }
@@ -39,8 +37,6 @@ std::vector<unsigned char> openssl_sha256_hasher(EVP_MD_CTX * const mdctx, const
     EVP_DigestUpdate(mdctx, filebuffer.data(), filebuffer.size());
     EVP_DigestFinal_ex(mdctx, openSSLSha256Output.data(), &mdLength);
     openSSLSha256Output.resize(mdLength);
-    std::cout << TXT_BICYA << "OpenSSL SHA-256: " << TXT_NORML;
-    printShaOut(openSSLSha256Output);
     EVP_MD_free(openssl_sha256_md);
     return openSSLSha256Output;
 
@@ -57,8 +53,6 @@ std::vector<unsigned char> openssl_sha512_hasher(EVP_MD_CTX * const mdctx, const
     EVP_DigestUpdate(mdctx, filebuffer.data(), filebuffer.size());
     EVP_DigestFinal_ex(mdctx, openSSLSha512Output.data(), &mdLength);
     openSSLSha512Output.resize(mdLength);
-    std::cout << TXT_BICYA << "OpenSSL SHA-512: " << TXT_NORML;
-    printShaOut(openSSLSha512Output);
     EVP_MD_free(openssl_sha512_md);
     return openSSLSha512Output;
 

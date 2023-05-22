@@ -43,19 +43,31 @@ int main(int argc, char ** argv) {
 
     //// zen SHA-1 hasher
     std::vector<unsigned char> zenSha1Output   = zen_sha1_hasher(filebuffer);
+    std::cout << TXT_BICYA << "zen SHA-1:       " << TXT_NORML;
+    printShaOut(zenSha1Output);
     //// zen SHA-256 hasher
     std::vector<unsigned char> zenSha256Output = zen_sha256_hasher(filebuffer);
+    std::cout << TXT_BICYA << "zen SHA-256:     " << TXT_NORML;
+    printShaOut(zenSha256Output);
     //// zen SHA-512 hasher
     std::vector<unsigned char> zenSha512Output = zen_sha512_hasher(filebuffer);
+    std::cout << TXT_BICYA << "zen SHA-512:     " << TXT_NORML;
+    printShaOut(zenSha512Output);
 
     //////////////////
 
     //// zcash SHA-1 hasher
     std::vector<unsigned char> zcashSha1Output   = zcash_sha1_hasher(filebuffer);
+    std::cout << TXT_BICYA << "zcash SHA-1:     " << TXT_NORML;
+    printShaOut(zcashSha1Output);
     //// zcash SHA-256 hasher
     std::vector<unsigned char> zcashSha256Output = zcash_sha256_hasher(filebuffer);
+    std::cout << TXT_BICYA << "zcash SHA-256:   " << TXT_NORML;
+    printShaOut(zcashSha256Output);
     //// zcash SHA-512 hasher
     std::vector<unsigned char> zcashSha512Output = zcash_sha512_hasher(filebuffer);
+    std::cout << TXT_BICYA << "zcash SHA-512:   " << TXT_NORML;
+    printShaOut(zcashSha512Output);
 
     //////////////////
 
@@ -64,13 +76,17 @@ int main(int argc, char ** argv) {
 
     //// OpenSSL SHA-1 hasher
     std::vector<unsigned char> openSSLSha1Output = openssl_sha1_hasher(mdctx, filebuffer);
-
+    std::cout << TXT_BICYA << "OpenSSL SHA-1:   " << TXT_NORML;
+    printShaOut(openSSLSha1Output);
     //// OpenSSL SHA-256 hasher
     std::vector<unsigned char> openSSLSha256Output = openssl_sha256_hasher(mdctx, filebuffer);
-
+    std::cout << TXT_BICYA << "OpenSSL SHA-256: " << TXT_NORML;
+    printShaOut(openSSLSha256Output);
     //// OpenSSL SHA-512 hasher
     std::vector<unsigned char> openSSLSha512Output = openssl_sha512_hasher(mdctx, filebuffer);
-
+    std::cout << TXT_BICYA << "OpenSSL SHA-512: " << TXT_NORML;
+    printShaOut(openSSLSha512Output);
+    
     EVP_MD_CTX_free(mdctx);
 
     return 0;
