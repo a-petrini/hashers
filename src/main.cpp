@@ -2,12 +2,19 @@
 #include <vector>
 #include <string>
 
+#include "common.h"
 #include "configuration.h"
 #include "utilbellebelle.hpp"
+
+#include "benchmark/benchmark.h"
 
 #include "zen_hashers.hpp"
 #include "zcash_hashers.hpp"
 #include "openssl_hashers.hpp"
+
+#include "zen_hashers_tests.hpp"
+#include "zcash_hashers_tests.hpp"
+#include "openssl_hashers_tests.hpp"
 
 ////// Reference results
 // const char * exampleData {"The quick brown fox jumps over the lazy dog\n"}; // length = 44
@@ -30,15 +37,24 @@
 // sha512sum: 7c201e142d973538d6fa7be43d5f00a9684c35d4117d98ba191b785ab77da0574451019878bd21b28aab1a402e04726d69e9f5bd335fa7a3f80877693629de6c  100M.txt
 //////
 
+// Naaaaa, mannaggia! Globali!
+std::vector<char> filebuffer;
+EVP_MD_CTX* mdctx = nullptr;
+
 int main(int argc, char ** argv) {
 
-    std::vector<char> filebuffer;
-    if (argc > 1)
+    bool doPerfTests = false;
+
+    if (argc > 1) {
         filebuffer = readBuffer(argv[1]);
+        doPerfTests = true;
+        std::cout << TXT_BIGRN << "Running correctness test on input file" << TXT_NORML << std::endl;
+    }
     else {
         // Added a \n to be compliant with the content of test.txt
         const char * exampleData {"The quick brown fox jumps over the lazy dog\n"};
         std::copy(exampleData, exampleData + 44, std::back_inserter(filebuffer));
+        std::cout << TXT_BIYLW << "No input file specified, just running correctness test with dummy string" << TXT_NORML << std::endl;
     }
 
     //// zen SHA-1 hasher
@@ -71,7 +87,7 @@ int main(int argc, char ** argv) {
 
     //////////////////
 
-    EVP_MD_CTX   *mdctx = nullptr;
+
     mdctx = EVP_MD_CTX_new();
 
     //// OpenSSL SHA-1 hasher
@@ -86,7 +102,27 @@ int main(int argc, char ** argv) {
     std::vector<unsigned char> openSSLSha512Output = openssl_sha512_hasher(mdctx, filebuffer);
     std::cout << TXT_BICYA << "OpenSSL SHA-512: " << TXT_NORML;
     printShaOut(openSSLSha512Output);
-    
+
+    if (doPerfTests) {
+        std::cout << std::endl << TXT_BIGRN << "Running performance test on input file" << TXT_NORML << std::endl;
+
+        BENCHMARK(zen_sha1_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+        BENCHMARK(zen_sha256_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+        BENCHMARK(zen_sha512_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+
+        BENCHMARK(zcash_sha1_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+        BENCHMARK(zcash_sha256_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+        BENCHMARK(zcash_sha512_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+
+        BENCHMARK(openssl_sha1_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+        BENCHMARK(openssl_sha256_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+        BENCHMARK(openssl_sha512_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+
+        ::benchmark::Initialize(&argc, argv);
+        ::benchmark::RunSpecifiedBenchmarks();
+        ::benchmark::Shutdown();
+    }
+
     EVP_MD_CTX_free(mdctx);
 
     return 0;

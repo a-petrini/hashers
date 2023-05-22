@@ -72,13 +72,20 @@ set(COMMON_SRC
   zcash/sha512.cpp
 )
 
+set(PERFTEST_SRC
+  zen_hashers_tests.cpp
+  zcash_hashers_tests.cpp
+  openssl_hashers_tests.cpp
+)
+
 target_sources(onetest PRIVATE
-	main.cpp
+  main.cpp
   utilbellebelle.cpp
   ${COMMON_SRC}
+  ${PERFTEST_SRC}
 )
 target_sources(oneperf PRIVATE
-	profile_run.cpp
+  profile_run.cpp
   utilbellebelle.cpp
   ${COMMON_SRC}
 )
