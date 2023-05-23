@@ -43,16 +43,9 @@ add_subdirectory("extern/google-benchmark")
 
 configure_file(configuration.h.in configuration.h)
 
-add_executable(onetest)
-add_executable(oneperf)
+add_executable(hashers)
 
-target_include_directories(onetest PRIVATE
-	"${PROJECT_BINARY_DIR}"
-  zen
-  zcash
-  .
-)
-target_include_directories(oneperf PRIVATE
+target_include_directories(hashers PRIVATE
 	"${PROJECT_BINARY_DIR}"
   zen
   zcash
@@ -86,26 +79,37 @@ set(PERFTEST_SRC
   openssl_hashers_tests.cpp
 )
 
-target_sources(onetest PRIVATE
+target_sources(hashers PRIVATE
   main.cpp
   utilbellebelle.cpp
   ${COMMON_SRC}
   ${PERFTEST_SRC}
 )
-target_sources(oneperf PRIVATE
-  profile_run.cpp
-  utilbellebelle.cpp
-  ${COMMON_SRC}
+
+target_link_libraries(hashers PRIVATE
+ssl
+crypto
+benchmark
 )
 
-target_link_libraries(onetest PRIVATE
-  ssl
-  crypto
-  benchmark
-)
-target_link_libraries(oneperf PRIVATE
-  ssl
-  crypto
-  benchmark
-)
+
+# # This one is a brief test for integrating Google Benchmark into the project
+# # I keep that as a reference... who knows
+# add_executable(oneperf)
+# target_include_directories(oneperf PRIVATE
+# 	"${PROJECT_BINARY_DIR}"
+#   zen
+#   zcash
+#   .
+# )
+# target_sources(oneperf PRIVATE
+#   profile_run.cpp
+#   utilbellebelle.cpp
+#   ${COMMON_SRC}
+# )
+# target_link_libraries(oneperf PRIVATE
+# ssl
+# crypto
+#   benchmark
+# )
 
