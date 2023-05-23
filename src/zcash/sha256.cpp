@@ -5,6 +5,7 @@
 
 #include "zcash/sha256.h"
 #include "zcash/common.h"
+#include "configuration.h"
 
 #include <assert.h>
 #include <string.h>
@@ -33,14 +34,10 @@ namespace sha256d64_avx2
 void Transform_8way(unsigned char* out, const unsigned char* in);
 }
 
-namespace sha256d64_shani
-{
-void Transform_2way(unsigned char* out, const unsigned char* in);
-}
-
 namespace sha256_shani
 {
 void Transform(uint32_t* s, const unsigned char* chunk, size_t blocks);
+void Transform_2way(unsigned char* out, const unsigned char* in);
 }
 
 /// Internal SHA-256 implementation.
@@ -607,7 +604,7 @@ std::string SHA256AutoDetect()
     if (have_shani) {
         Transform = sha256_shani::Transform;
         TransformD64 = TransformD64Wrapper<sha256_shani::Transform>;
-        TransformD64_2way = sha256d64_shani::Transform_2way;
+        TransformD64_2way = sha256_shani::Transform_2way;
         ret = "shani(1way,2way)";
         have_sse4 = false; // Disable SSE4/AVX2;
         have_avx2 = false;

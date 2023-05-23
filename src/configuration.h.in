@@ -1,5 +1,9 @@
-// the configured options and settings for hashash
+// configure options and settings via cmake
 #define HashingFunctions_VERSION_MAJOR @HashingFunctions_VERSION_MAJOR@
 #define HashingFunctions_VERSION_MINOR @HashingFunctions_VERSION_MINOR@
 
+// Fixed stuff, who cares
 #define USE_ASM
+#define ENABLE_SHANI
+#define ENABLE_SSE41
+#define ENABLE_AVX2

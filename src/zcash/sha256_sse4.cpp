@@ -7,10 +7,11 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include "configuration.h"
 
 #if defined(__x86_64__) || defined(__amd64__)
 
-namespace sha256_sse4
+namespace zcash::sha256_sse4
 {
 void Transform(uint32_t* s, const unsigned char* chunk, size_t blocks)
 {
@@ -954,7 +955,7 @@ void Transform(uint32_t* s, const unsigned char* chunk, size_t blocks)
         : "cc", "memory", "xmm0", "xmm1", "xmm2", "xmm3", "xmm4", "xmm5", "xmm6", "xmm7", "xmm8", "xmm9", "xmm10", "xmm11", "xmm12"
    );
 }
-}
+} // namespace zcash::sha256_sse4
 
 /*
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -1,5 +1,6 @@
-#ifdef ENABLE_SSE41
+#include "configuration.h"
 
+#ifdef ENABLE_SSE41
 #include <stdint.h>
 #include <immintrin.h>
 

@@ -1,3 +1,5 @@
+#include "configuration.h"
+
 #ifdef ENABLE_AVX2
 
 #include <stdint.h>
@@ -6,8 +8,7 @@
 #include "zcash/sha256.h"
 #include "zcash/common.h"
 
-namespace sha256d64_avx2 {
-namespace {
+namespace zcash::sha256d64_avx2 {
 
 __m256i inline K(uint32_t x) { return _mm256_set1_epi32(x); }
 
@@ -65,8 +66,6 @@ void inline Write8(unsigned char* out, int offset, __m256i v) {
     WriteLE32(out + 160 + offset, _mm256_extract_epi32(v, 2));
     WriteLE32(out + 192 + offset, _mm256_extract_epi32(v, 1));
     WriteLE32(out + 224 + offset, _mm256_extract_epi32(v, 0));
-}
-
 }
 
 void Transform_8way(unsigned char* out, const unsigned char* in)
@@ -320,6 +319,6 @@ void Transform_8way(unsigned char* out, const unsigned char* in)
     Write8(out, 28, Add(h, K(0x5be0cd19ul)));
 }
 
-}
+} // namespace zcash::sha256d64_avx2
 
 #endif

@@ -59,6 +59,11 @@ target_include_directories(oneperf PRIVATE
   .
 )
 
+set_source_files_properties(zcash/sha256_avx2.cpp PROPERTIES COMPILE_OPTIONS -mavx2)
+set_source_files_properties(zcash/sha256_shani.cpp PROPERTIES COMPILE_OPTIONS "-msha;-msse4.1")
+set_source_files_properties(zcash/sha256_sse4.cpp PROPERTIES COMPILE_OPTIONS -msse4)
+set_source_files_properties(zcash/sha256_sse41.cpp PROPERTIES COMPILE_OPTIONS -msse4)
+
 set(COMMON_SRC
   openssl_hashers.cpp
   zen_hashers.cpp
@@ -68,7 +73,10 @@ set(COMMON_SRC
   zen/sha512.cpp
   zcash/sha1.cpp
   zcash/sha256.cpp
+  zcash/sha256_avx2.cpp
+  zcash/sha256_shani.cpp
   zcash/sha256_sse41.cpp
+  zcash/sha256_sse4.cpp
   zcash/sha512.cpp
 )
 

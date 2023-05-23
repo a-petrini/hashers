@@ -6,12 +6,15 @@
 // Written and placed in public domain by Jeffrey Walton.
 // Based on code from Intel, and by Sean Gulley for the miTLS project.
 
+//#include "configuration.h"
+#define ENABLE_SHANI
+
 #ifdef ENABLE_SHANI
 
 #include <stdint.h>
 #include <immintrin.h>
 
-namespace {
+namespace zcash::sha256_shani {
 
 alignas(__m128i) const uint8_t MASK[16] = {0x03, 0x02, 0x01, 0x00, 0x07, 0x06, 0x05, 0x04, 0x0b, 0x0a, 0x09, 0x08, 0x0f, 0x0e, 0x0d, 0x0c};
 alignas(__m128i) const uint8_t INIT0[16] = {0x8c, 0x68, 0x05, 0x9b, 0x7f, 0x52, 0x0e, 0x51, 0x85, 0xae, 0x67, 0xbb, 0x67, 0xe6, 0x09, 0x6a};
@@ -72,9 +75,7 @@ void inline  __attribute__((always_inline)) Save(unsigned char* out, __m128i s)
 {
     _mm_storeu_si128((__m128i*)out, _mm_shuffle_epi8(s, _mm_load_si128((const __m128i*)MASK)));
 }
-}
 
-namespace sha256_shani {
 void Transform(uint32_t* s, const unsigned char* chunk, size_t blocks)
 {
     __m128i m0, m1, m2, m3, s0, s1, so0, so1;
@@ -137,9 +138,6 @@ void Transform(uint32_t* s, const unsigned char* chunk, size_t blocks)
     _mm_storeu_si128((__m128i*)s, s0);
     _mm_storeu_si128((__m128i*)(s + 4), s1);
 }
-}
-
-namespace sha256d64_shani {
 
 void Transform_2way(unsigned char* out, const unsigned char* in)
 {
@@ -351,6 +349,6 @@ void Transform_2way(unsigned char* out, const unsigned char* in)
     Save(out + 48, bs1);
 }
 
-}
+} // namespace zcash::sha256_shani
 
 #endif
