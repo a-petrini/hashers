@@ -13,6 +13,7 @@
 #define TXT_BIYLW "\033[93;1m"
 #define TXT_BIGRN "\033[92;1m"
 #define TXT_BIRED "\033[91;1m"
+#define TXT_BIBLK "\033[90;1m"
 #define TXT_NORML "\033[0m"
 #else
 #define TXT_BICYA ""

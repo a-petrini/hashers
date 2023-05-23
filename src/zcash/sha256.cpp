@@ -635,6 +635,57 @@ std::string SHA256AutoDetect()
     return ret;
 }
 
+std::string SHA256_selectDefault() {
+    Transform           = sha256::Transform;
+    TransformD64        = sha256::TransformD64;
+    TransformD64_2way   = nullptr;
+    TransformD64_4way   = nullptr;
+    TransformD64_8way   = nullptr;
+
+    assert(SelfTest());
+    return "standard";
+}
+
+std::string SHA256_selectShani() {
+    SHA256_selectDefault();
+    Transform           = sha256_shani::Transform;
+    TransformD64        = TransformD64Wrapper<sha256_shani::Transform>;
+    TransformD64_2way   = sha256_shani::Transform_2way;
+
+    assert(SelfTest());
+    return "shani(1way,2way)";
+}
+
+std::string SHA256_selectSSE4() {
+    SHA256_selectDefault();
+    Transform           = sha256_sse4::Transform;
+    TransformD64        = TransformD64Wrapper<sha256_sse4::Transform>;
+
+    assert(SelfTest());
+    return "sse4(1way)";
+}
+
+std::string SHA256_selectSSE41() {
+    SHA256_selectDefault();
+    Transform           = sha256_sse4::Transform;
+    TransformD64        = TransformD64Wrapper<sha256_sse4::Transform>;
+    TransformD64_4way   = sha256d64_sse41::Transform_4way;
+
+    assert(SelfTest());
+    return "sse4(1way),sse41(4way)";
+}
+
+std::string SHA256_selectAVX() {
+    SHA256_selectDefault();
+    Transform           = sha256_sse4::Transform;
+    TransformD64        = TransformD64Wrapper<sha256_sse4::Transform>;
+    TransformD64_4way   = sha256d64_sse41::Transform_4way;
+    TransformD64_8way   = sha256d64_avx2::Transform_8way;
+
+    assert(SelfTest());
+    return "sse4(1way),sse41(4way),avx2(8way)";
+}
+
 ////// SHA-256
 
 CSHA256::CSHA256() : bytes(0)

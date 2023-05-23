@@ -6,8 +6,7 @@
 // Written and placed in public domain by Jeffrey Walton.
 // Based on code from Intel, and by Sean Gulley for the miTLS project.
 
-//#include "configuration.h"
-#define ENABLE_SHANI
+#include "configuration.h"
 
 #ifdef ENABLE_SHANI
 

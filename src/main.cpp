@@ -8,6 +8,8 @@
 
 #include "benchmark/benchmark.h"
 
+#include "zcash/sha256.h"
+
 #include "zen_hashers.hpp"
 #include "zcash_hashers.hpp"
 #include "openssl_hashers.hpp"
@@ -57,6 +59,16 @@ int main(int argc, char ** argv) {
         std::cout << TXT_BIYLW << "No input file specified, just running correctness test with dummy string" << TXT_NORML << std::endl;
     }
 
+    std::cout << TXT_BIBLU << "Supporting AVX instruction set? " << TXT_BIBLK << std::boolalpha << zcash::AVXEnabled() << TXT_NORML << std::endl;
+    std::cout << TXT_BIBLU << "Zcash SHA-256 autodetected implementation: " << TXT_BIBLK << zcash::SHA256AutoDetect() << TXT_NORML << std::endl;
+
+    // // Override autoselection of ZCash SHA-256 implementation
+    // zcash::SHA256_selectDefault();   std::cout << TXT_BIBLU << "Zcash SHA-256 overridden implementation: " << TXT_BIBLK << "default" << std::endl;
+    // zcash::SHA256_selectShani();     std::cout << TXT_BIBLU << "Zcash SHA-256 overridden implementation: " << TXT_BIBLK << "SHAni" << std::endl;
+    // zcash::SHA256_selectSSE4();      std::cout << TXT_BIBLU << "Zcash SHA-256 overridden implementation: " << TXT_BIBLK << "SSE4" << std::endl;
+    // zcash::SHA256_selectSSE41();     std::cout << TXT_BIBLU << "Zcash SHA-256 overridden implementation: " << TXT_BIBLK << "SSE4.1" << std::endl;
+    // zcash::SHA256_selectAVX();       std::cout << TXT_BIBLU << "Zcash SHA-256 overridden implementation: " << TXT_BIBLK << "AVX2" << std::endl;
+
     //// zen SHA-1 hasher
     std::vector<unsigned char> zenSha1Output   = zen_sha1_hasher(filebuffer);
     std::cout << TXT_BICYA << "zen SHA-1:       " << TXT_NORML;
@@ -86,7 +98,6 @@ int main(int argc, char ** argv) {
     printShaOut(zcashSha512Output);
 
     //////////////////
-
 
     mdctx = EVP_MD_CTX_new();
 

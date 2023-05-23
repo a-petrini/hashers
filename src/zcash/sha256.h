@@ -43,4 +43,12 @@ std::string SHA256AutoDetect();
  */
 void SHA256D64(unsigned char* output, const unsigned char* input, size_t blocks);
 
+bool AVXEnabled();
+
+std::string SHA256_selectDefault();
+std::string SHA256_selectShani();
+std::string SHA256_selectSSE4();
+std::string SHA256_selectSSE41();
+std::string SHA256_selectAVX();
+
 } // namespace zcash
