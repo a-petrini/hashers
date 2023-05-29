@@ -10,7 +10,7 @@ void zen_sha1_perf(benchmark::State& state) {
     for (auto _ : state) {
         benchmark::DoNotOptimize(zen_sha1_hasher(subvec));
     }
-    state.SetItemsProcessed(N*state.iterations());
+    state.SetBytesProcessed(state.iterations() * state.range(0));
 }
 
 void zen_sha256_perf(benchmark::State& state) {
@@ -20,7 +20,7 @@ void zen_sha256_perf(benchmark::State& state) {
     for (auto _ : state) {
         benchmark::DoNotOptimize(zen_sha256_hasher(subvec));
     }
-    state.SetItemsProcessed(N*state.iterations());
+    state.SetBytesProcessed(state.iterations() * state.range(0));
 }
 
 void zen_sha512_perf(benchmark::State& state) {
@@ -30,5 +30,5 @@ void zen_sha512_perf(benchmark::State& state) {
     for (auto _ : state) {
         benchmark::DoNotOptimize(zen_sha512_hasher(subvec));
     }
-    state.SetItemsProcessed(N*state.iterations());
+    state.SetBytesProcessed(state.iterations() * state.range(0));
 }

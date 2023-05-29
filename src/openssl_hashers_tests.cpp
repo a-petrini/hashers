@@ -10,7 +10,7 @@ void openssl_sha1_perf(benchmark::State& state) {
     for (auto _ : state) {
         benchmark::DoNotOptimize(openssl_sha1_hasher(mdctx, subvec));
     }
-    state.SetItemsProcessed(N*state.iterations());
+    state.SetBytesProcessed(state.iterations() * state.range(0));
 }
 
 void openssl_sha256_perf(benchmark::State& state){
@@ -20,7 +20,7 @@ void openssl_sha256_perf(benchmark::State& state){
     for (auto _ : state) {
         benchmark::DoNotOptimize(openssl_sha256_hasher(mdctx, subvec));
     }
-    state.SetItemsProcessed(N*state.iterations());
+    state.SetBytesProcessed(state.iterations() * state.range(0));
 }
 
 void openssl_sha512_perf(benchmark::State& state){
@@ -30,5 +30,5 @@ void openssl_sha512_perf(benchmark::State& state){
     for (auto _ : state) {
         benchmark::DoNotOptimize(openssl_sha512_hasher(mdctx, subvec));
     }
-    state.SetItemsProcessed(N*state.iterations());
+    state.SetBytesProcessed(state.iterations() * state.range(0));
 }

@@ -93,23 +93,3 @@ benchmark
 )
 
 
-# # This one is a brief test for integrating Google Benchmark into the project
-# # I keep that as a reference... who knows
-# add_executable(oneperf)
-# target_include_directories(oneperf PRIVATE
-# 	"${PROJECT_BINARY_DIR}"
-#   zen
-#   zcash
-#   .
-# )
-# target_sources(oneperf PRIVATE
-#   profile_run.cpp
-#   utilbellebelle.cpp
-#   ${COMMON_SRC}
-# )
-# target_link_libraries(oneperf PRIVATE
-# ssl
-# crypto
-#   benchmark
-# )
-
