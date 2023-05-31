@@ -145,9 +145,6 @@ int main(int argc, char **argv)
     if (doPerfTests)
     {
         std::cout << "\n" TXT_BIGRN << "Running performance test on input" << TXT_NORML << std::endl;
-        const std::size_t inputSize{filebuffer.size()};
-
-        
 
         BENCHMARK(zen_sha1_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
         BENCHMARK(zen_sha256_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
