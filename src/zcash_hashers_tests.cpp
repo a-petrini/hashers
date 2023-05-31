@@ -17,7 +17,6 @@ void zcash_sha1_perf(benchmark::State &state)
 void zcash_sha256_perf(benchmark::State &state)
 {
     const unsigned int N = state.range();
-    std::vector<char> subvec(N);
     for (auto _ : state)
     {
         auto hash = zcash_sha256_hasher(filebuffer.data(), N);
