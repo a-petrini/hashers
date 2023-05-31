@@ -36,11 +36,15 @@ Implementations are extracted or are privided by the following packages / librar
 * [OpenSSL](https://github.com/openssl/openssl): downloaded and compiled at compile time
 
 
-## Running the program
-When launched with no command line arguments, the program hashes the following string (hardcoded):
+## Usage
+You can launch the program with optional typical benchmark arguments and optionally redirect the content of a file.
+```shell
+$ ./hashers [<benchmark-commandline-arguments>] [< input file]
 ```
-The quick brown fox jumps over the lazy dog
-<new line>
+
+When launched with no redirected input, the program hashes the following string (hardcoded):
+```
+The quick brown fox jumps over the lazy dog\n
 ```
 using all the algorithms listed in the previous paragraph.
 
@@ -51,12 +55,15 @@ sha256sum assets/test.txt
 sha512sum assets/test.txt
 ```
 
-The program accepts an input file as command line argument.
-
+As mentioned you can optionally redirect the content of a file with the only constraint overall number of chars is above 64.
 When so, it hashes the input file using all the algorithms listed in the previous paragraph.
 It also benchmarks the algorithms on substrings of the input file of different lengths (from 64 Bytes to 4MB, power of 2 step), leveraging Google Benchmark library for measuring execution times and providing additional statistics.
 
-Note that a 4 MBytes or larger file is **required**. Smaller file will result in undefined behaviour.
+example
+```shell
+$ ./hashers --benchmark_filter=openssl_sha256 < ../assets/2M.dat
+```
+
 
 ----
 
@@ -78,7 +85,7 @@ SHA-512: C
 
 * OpenSSL
 ```
-SHA-1: automatically selects one of the digest implementation (opefully, the most optimized)
-SHA-256: automatically selects one of the digest implementation (opefully, the most optimized)
-SHA-512: automatically selects one of the digest implementation (opefully, the most optimized)
+SHA-1: automatically selects one of the digest implementation (hopefully, the most optimized)
+SHA-256: automatically selects one of the digest implementation (hopefully, the most optimized)
+SHA-512: automatically selects one of the digest implementation (hopefully, the most optimized)
 ```

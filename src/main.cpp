@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <unistd.h>
 
 #include "common.h"
 #include "configuration.h"
@@ -53,20 +54,38 @@ EVP_MD_CTX *mdctx = nullptr;
 int main(int argc, char **argv)
 {
 
-    bool doPerfTests = false;
+    // Allow parsing of command line arguments for benchmark
+    ::benchmark::Initialize(&argc, argv);
 
-    if (argc > 1)
+    // Detect if a test file has been specified by redirecting input
+    // Note !! Works only on POSIX systems
+    if (!isatty(fileno(stdin)))
     {
-        filebuffer = readBuffer(argv[1]);
-        doPerfTests = true;
-        std::cout << TXT_BIGRN << "Running correctness test on input file" << TXT_NORML << std::endl;
+        std::string line;
+        while (std::getline(std::cin, line))
+        {
+            filebuffer.insert(filebuffer.end(), line.begin(), line.end());
+        }
+    }
+
+    // If a test file has been specified, run the benchmark
+    const bool doPerfTests{!filebuffer.empty()};
+
+    if (doPerfTests)
+    {
+        if (filebuffer.size() < 64)
+        {
+            std::cerr << TXT_BIRED << "Input data too small (min 64), exiting" << TXT_NORML << std::endl;
+            ::benchmark::Shutdown();
+            return -1;
+        }
     }
     else
     {
         // Added a \n to be compliant with the content of test.txt
-        const char *exampleData{"The quick brown fox jumps over the lazy dog\n"};
-        std::copy(exampleData, exampleData + 44, std::back_inserter(filebuffer));
-        std::cout << TXT_BIYLW << "No input file specified, just running correctness test with dummy string" << TXT_NORML << std::endl;
+        const std::string sample_data{"The quick brown fox jumps over the lazy dog\n"};
+        filebuffer.insert(filebuffer.end(), sample_data.begin(), sample_data.end());
+        std::cout << TXT_BIYLW << "No input specified, just running correctness test with dummy string" << TXT_NORML << std::endl;
     }
 
     std::cout << TXT_BIBLU << "Supporting AVX instruction set? " << TXT_BIBLK << std::boolalpha << zcash::AVXEnabled() << TXT_NORML << std::endl;
@@ -108,7 +127,6 @@ int main(int argc, char **argv)
     printShaOut(zcashSha512Output);
 
     //////////////////
-
     mdctx = EVP_MD_CTX_new();
 
     //// OpenSSL SHA-1 hasher
@@ -126,27 +144,28 @@ int main(int argc, char **argv)
 
     if (doPerfTests)
     {
-        std::cout << std::endl
-                  << TXT_BIGRN << "Running performance test on input file" << TXT_NORML << std::endl;
+        std::cout << "\n" TXT_BIGRN << "Running performance test on input" << TXT_NORML << std::endl;
+        const std::size_t inputSize{filebuffer.size()};
 
-        BENCHMARK(zen_sha1_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
-        BENCHMARK(zen_sha256_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
-        BENCHMARK(zen_sha512_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
+        
 
-        BENCHMARK(zcash_sha1_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
-        BENCHMARK(zcash_sha256_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
-        BENCHMARK(zcash_sha512_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
+        BENCHMARK(zen_sha1_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
+        BENCHMARK(zen_sha256_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
+        BENCHMARK(zen_sha512_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
 
-        BENCHMARK(openssl_sha1_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
-        BENCHMARK(openssl_sha256_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
-        BENCHMARK(openssl_sha512_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
+        BENCHMARK(zcash_sha1_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
+        BENCHMARK(zcash_sha256_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
+        BENCHMARK(zcash_sha512_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
 
-        ::benchmark::Initialize(&argc, argv);
+        BENCHMARK(openssl_sha1_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
+        BENCHMARK(openssl_sha256_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
+        BENCHMARK(openssl_sha512_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
+
         ::benchmark::RunSpecifiedBenchmarks();
-        ::benchmark::Shutdown();
+        
     }
 
     EVP_MD_CTX_free(mdctx);
-
+    ::benchmark::Shutdown();
     return 0;
 }
