@@ -80,30 +80,30 @@ int main(int argc, char **argv)
     // zcash::SHA256_selectAVX();       std::cout << TXT_BIBLU << "Zcash SHA-256 overridden implementation: " << TXT_BIBLK << "AVX2" << std::endl;
 
     //// zen SHA-1 hasher
-    std::vector<unsigned char> zenSha1Output = zen_sha1_hasher(filebuffer);
+    std::vector<unsigned char> zenSha1Output = zen_sha1_hasher(filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "zen SHA-1:       " << TXT_NORML;
     printShaOut(zenSha1Output);
     //// zen SHA-256 hasher
-    std::vector<unsigned char> zenSha256Output = zen_sha256_hasher(filebuffer);
+    std::vector<unsigned char> zenSha256Output = zen_sha256_hasher(filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "zen SHA-256:     " << TXT_NORML;
     printShaOut(zenSha256Output);
     //// zen SHA-512 hasher
-    std::vector<unsigned char> zenSha512Output = zen_sha512_hasher(filebuffer);
+    std::vector<unsigned char> zenSha512Output = zen_sha512_hasher(filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "zen SHA-512:     " << TXT_NORML;
     printShaOut(zenSha512Output);
 
     //////////////////
 
     //// zcash SHA-1 hasher
-    std::vector<unsigned char> zcashSha1Output = zcash_sha1_hasher(filebuffer);
+    std::vector<unsigned char> zcashSha1Output = zcash_sha1_hasher(filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "zcash SHA-1:     " << TXT_NORML;
     printShaOut(zcashSha1Output);
     //// zcash SHA-256 hasher
-    std::vector<unsigned char> zcashSha256Output = zcash_sha256_hasher(filebuffer);
+    std::vector<unsigned char> zcashSha256Output = zcash_sha256_hasher(filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "zcash SHA-256:   " << TXT_NORML;
     printShaOut(zcashSha256Output);
     //// zcash SHA-512 hasher
-    std::vector<unsigned char> zcashSha512Output = zcash_sha512_hasher(filebuffer);
+    std::vector<unsigned char> zcashSha512Output = zcash_sha512_hasher(filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "zcash SHA-512:   " << TXT_NORML;
     printShaOut(zcashSha512Output);
 
@@ -112,15 +112,15 @@ int main(int argc, char **argv)
     mdctx = EVP_MD_CTX_new();
 
     //// OpenSSL SHA-1 hasher
-    std::vector<unsigned char> openSSLSha1Output = openssl_sha1_hasher(EVP_get_digestbyname("SHA1"), mdctx, filebuffer);
+    std::vector<unsigned char> openSSLSha1Output = openssl_digest(EVP_get_digestbyname("SHA1"), mdctx, filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "OpenSSL SHA-1:   " << TXT_NORML;
     printShaOut(openSSLSha1Output);
     //// OpenSSL SHA-256 hasher
-    std::vector<unsigned char> openSSLSha256Output = openssl_sha256_hasher(EVP_get_digestbyname("SHA256"), mdctx, filebuffer);
+    std::vector<unsigned char> openSSLSha256Output = openssl_digest(EVP_get_digestbyname("SHA256"), mdctx, filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "OpenSSL SHA-256: " << TXT_NORML;
     printShaOut(openSSLSha256Output);
     //// OpenSSL SHA-512 hasher
-    std::vector<unsigned char> openSSLSha512Output = openssl_sha512_hasher(EVP_get_digestbyname("SHA512"), mdctx, filebuffer);
+    std::vector<unsigned char> openSSLSha512Output = openssl_digest(EVP_get_digestbyname("SHA512"), mdctx, filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "OpenSSL SHA-512: " << TXT_NORML;
     printShaOut(openSSLSha512Output);
 

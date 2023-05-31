@@ -6,42 +6,36 @@
 
 void openssl_sha1_perf(benchmark::State &state)
 {
+    static auto md{EVP_get_digestbyname("SHA1")};
     const unsigned int N = state.range();
-    std::vector<char> subvec(N);
-    std::memcpy(subvec.data(), filebuffer.data(), N);
-    auto md{EVP_get_digestbyname("SHA1")};
     for (auto _ : state)
     {
-        auto hash = openssl_sha1_hasher(md, mdctx, subvec);
+        auto hash = openssl_digest(md, mdctx, filebuffer.data(), N);
         benchmark::DoNotOptimize(hash);
     }
-    state.SetBytesProcessed(state.iterations() * state.range(0));
+    state.SetBytesProcessed(state.iterations() * N);
 }
 
 void openssl_sha256_perf(benchmark::State &state)
 {
+    static auto md{EVP_get_digestbyname("SHA256")};
     const unsigned int N = state.range();
-    std::vector<char> subvec(N);
-    std::memcpy(subvec.data(), filebuffer.data(), N);
-    auto md{EVP_get_digestbyname("SHA256")};
     for (auto _ : state)
     {
-        auto hash = openssl_sha256_hasher(md, mdctx, subvec);
+        auto hash = openssl_digest(md, mdctx, filebuffer.data(), N);
         benchmark::DoNotOptimize(hash);
     }
-    state.SetBytesProcessed(state.iterations() * state.range(0));
+    state.SetBytesProcessed(state.iterations() * N);
 }
 
 void openssl_sha512_perf(benchmark::State &state)
 {
+    static auto md{EVP_get_digestbyname("SHA512")};
     const unsigned int N = state.range();
-    std::vector<char> subvec(N);
-    std::memcpy(subvec.data(), filebuffer.data(), N);
-    auto md{EVP_get_digestbyname("SHA512")};
     for (auto _ : state)
     {
-        auto hash = openssl_sha512_hasher(md, mdctx, subvec);
+        auto hash = openssl_digest(md, mdctx, filebuffer.data(), N);
         benchmark::DoNotOptimize(hash);
     }
-    state.SetBytesProcessed(state.iterations() * state.range(0));
+    state.SetBytesProcessed(state.iterations() * N);
 }
