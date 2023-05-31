@@ -25,7 +25,7 @@
 // sha1:   be417768b5c3c5c1d9bcb2e7c119196dd76b5570
 // sha256: c03905fcdab297513a620ec81ed46ca44ddb62d41cbbd83eb4a5a3592be26a69
 // sha512: a12ac6bdd854ac30c5cc5b576e1ee2c060c0d8c2bec8797423d7119aa2b962f7f30ce2e39879cbff0109c8f0a3fd9389a369daae45df7d7b286d7d98272dc5b1
-// 
+//
 // assets/test.txt
 // --------
 // sha1sum:   be417768b5c3c5c1d9bcb2e7c119196dd76b5570  test.txt
@@ -48,20 +48,23 @@
 
 // Naaaaa, mannaggia! Globali!
 std::vector<char> filebuffer;
-EVP_MD_CTX* mdctx = nullptr;
+EVP_MD_CTX *mdctx = nullptr;
 
-int main(int argc, char ** argv) {
+int main(int argc, char **argv)
+{
 
     bool doPerfTests = false;
 
-    if (argc > 1) {
+    if (argc > 1)
+    {
         filebuffer = readBuffer(argv[1]);
         doPerfTests = true;
         std::cout << TXT_BIGRN << "Running correctness test on input file" << TXT_NORML << std::endl;
     }
-    else {
+    else
+    {
         // Added a \n to be compliant with the content of test.txt
-        const char * exampleData {"The quick brown fox jumps over the lazy dog\n"};
+        const char *exampleData{"The quick brown fox jumps over the lazy dog\n"};
         std::copy(exampleData, exampleData + 44, std::back_inserter(filebuffer));
         std::cout << TXT_BIYLW << "No input file specified, just running correctness test with dummy string" << TXT_NORML << std::endl;
     }
@@ -77,7 +80,7 @@ int main(int argc, char ** argv) {
     // zcash::SHA256_selectAVX();       std::cout << TXT_BIBLU << "Zcash SHA-256 overridden implementation: " << TXT_BIBLK << "AVX2" << std::endl;
 
     //// zen SHA-1 hasher
-    std::vector<unsigned char> zenSha1Output   = zen_sha1_hasher(filebuffer);
+    std::vector<unsigned char> zenSha1Output = zen_sha1_hasher(filebuffer);
     std::cout << TXT_BICYA << "zen SHA-1:       " << TXT_NORML;
     printShaOut(zenSha1Output);
     //// zen SHA-256 hasher
@@ -92,7 +95,7 @@ int main(int argc, char ** argv) {
     //////////////////
 
     //// zcash SHA-1 hasher
-    std::vector<unsigned char> zcashSha1Output   = zcash_sha1_hasher(filebuffer);
+    std::vector<unsigned char> zcashSha1Output = zcash_sha1_hasher(filebuffer);
     std::cout << TXT_BICYA << "zcash SHA-1:     " << TXT_NORML;
     printShaOut(zcashSha1Output);
     //// zcash SHA-256 hasher
@@ -109,32 +112,34 @@ int main(int argc, char ** argv) {
     mdctx = EVP_MD_CTX_new();
 
     //// OpenSSL SHA-1 hasher
-    std::vector<unsigned char> openSSLSha1Output = openssl_sha1_hasher(mdctx, filebuffer);
+    std::vector<unsigned char> openSSLSha1Output = openssl_sha1_hasher(EVP_get_digestbyname("SHA1"), mdctx, filebuffer);
     std::cout << TXT_BICYA << "OpenSSL SHA-1:   " << TXT_NORML;
     printShaOut(openSSLSha1Output);
     //// OpenSSL SHA-256 hasher
-    std::vector<unsigned char> openSSLSha256Output = openssl_sha256_hasher(mdctx, filebuffer);
+    std::vector<unsigned char> openSSLSha256Output = openssl_sha256_hasher(EVP_get_digestbyname("SHA256"), mdctx, filebuffer);
     std::cout << TXT_BICYA << "OpenSSL SHA-256: " << TXT_NORML;
     printShaOut(openSSLSha256Output);
     //// OpenSSL SHA-512 hasher
-    std::vector<unsigned char> openSSLSha512Output = openssl_sha512_hasher(mdctx, filebuffer);
+    std::vector<unsigned char> openSSLSha512Output = openssl_sha512_hasher(EVP_get_digestbyname("SHA512"), mdctx, filebuffer);
     std::cout << TXT_BICYA << "OpenSSL SHA-512: " << TXT_NORML;
     printShaOut(openSSLSha512Output);
 
-    if (doPerfTests) {
-        std::cout << std::endl << TXT_BIGRN << "Running performance test on input file" << TXT_NORML << std::endl;
+    if (doPerfTests)
+    {
+        std::cout << std::endl
+                  << TXT_BIGRN << "Running performance test on input file" << TXT_NORML << std::endl;
 
-        BENCHMARK(zen_sha1_perf)->RangeMultiplier(2)->Range(64, 64<<16);
-        BENCHMARK(zen_sha256_perf)->RangeMultiplier(2)->Range(64, 64<<16);
-        BENCHMARK(zen_sha512_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+        BENCHMARK(zen_sha1_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
+        BENCHMARK(zen_sha256_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
+        BENCHMARK(zen_sha512_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
 
-        BENCHMARK(zcash_sha1_perf)->RangeMultiplier(2)->Range(64, 64<<16);
-        BENCHMARK(zcash_sha256_perf)->RangeMultiplier(2)->Range(64, 64<<16);
-        BENCHMARK(zcash_sha512_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+        BENCHMARK(zcash_sha1_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
+        BENCHMARK(zcash_sha256_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
+        BENCHMARK(zcash_sha512_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
 
-        BENCHMARK(openssl_sha1_perf)->RangeMultiplier(2)->Range(64, 64<<16);
-        BENCHMARK(openssl_sha256_perf)->RangeMultiplier(2)->Range(64, 64<<16);
-        BENCHMARK(openssl_sha512_perf)->RangeMultiplier(2)->Range(64, 64<<16);
+        BENCHMARK(openssl_sha1_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
+        BENCHMARK(openssl_sha256_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
+        BENCHMARK(openssl_sha512_perf)->RangeMultiplier(2)->Range(64, 64 << 16);
 
         ::benchmark::Initialize(&argc, argv);
         ::benchmark::RunSpecifiedBenchmarks();
