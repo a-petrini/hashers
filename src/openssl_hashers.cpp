@@ -1,11 +1,5 @@
 #include "openssl_hashers.hpp"
 
-#include <iostream>
-#include <vector>
-
-#include "configuration.h"
-#include "utilbellebelle.hpp"
-
 std::vector<unsigned char> openssl_digest(const EVP_MD *md, EVP_MD_CTX *mdctx, const char *data, const size_t count)
 {
     const size_t kDigestLength{static_cast<size_t>(EVP_MD_size(md))};

@@ -1,14 +1,5 @@
 #include "zcash_hashers.hpp"
 
-#include <iostream>
-#include <vector>
-
-#include "configuration.h"
-#include "utilbellebelle.hpp"
-
-#include "zcash/sha1.h"
-#include "zcash/sha256.h"
-#include "zcash/sha512.h"
 
 std::vector<unsigned char> zcash_sha1_hasher(const char *data, size_t len)
 {

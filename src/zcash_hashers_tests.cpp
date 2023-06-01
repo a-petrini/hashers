@@ -1,7 +1,5 @@
-#include "zcash_hashers_tests.hpp"
-#include <cstring>
 #include "common.h"
-#include "benchmark/benchmark.h"
+#include "zcash_hashers_tests.hpp"
 
 void zcash_sha1_perf(benchmark::State &state)
 {

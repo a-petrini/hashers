@@ -1,11 +1,5 @@
 #include "zen_hashers.hpp"
 
-#include <iostream>
-#include <vector>
-
-#include "configuration.h"
-#include "utilbellebelle.hpp"
-
 #include "zen/sha1.h"
 #include "zen/sha256.h"
 #include "zen/sha512.h"

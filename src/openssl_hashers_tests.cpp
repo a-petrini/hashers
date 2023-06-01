@@ -1,7 +1,5 @@
-#include "openssl_hashers_tests.hpp"
-
 #include "common.h"
-#include <cstring>
+#include "openssl_hashers_tests.hpp"
 #include "benchmark/benchmark.h"
 
 void openssl_sha1_perf(benchmark::State &state)

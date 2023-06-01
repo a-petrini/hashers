@@ -9,12 +9,6 @@
 
 #include "benchmark/benchmark.h"
 
-#include "zcash/sha256.h"
-
-#include "zen_hashers.hpp"
-#include "zcash_hashers.hpp"
-#include "openssl_hashers.hpp"
-
 #include "zen_hashers_tests.hpp"
 #include "zcash_hashers_tests.hpp"
 #include "openssl_hashers_tests.hpp"

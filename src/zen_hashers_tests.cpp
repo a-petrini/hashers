@@ -1,6 +1,5 @@
-#include "zen_hashers_tests.hpp"
-#include <cstring>
 #include "common.h"
+#include "zen_hashers_tests.hpp"
 #include "benchmark/benchmark.h"
 
 void zen_sha1_perf(benchmark::State &state)
