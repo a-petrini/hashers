@@ -61,11 +61,11 @@ int main(int argc, char **argv)
     {
         const std::string sample_data{"The quick brown fox jumps over the lazy dog\n"};
         filebuffer.insert(filebuffer.end(), sample_data.begin(), sample_data.end());
-        std::cout << TXT_BIYLW << "No input specified, just running correctness test with dummy string" << TXT_NORML << std::endl;
+        std::cout << TXT_BIYLW "No input specified, just running correctness test with dummy string" TXT_NORML << std::endl;
     }
 
-    std::cout << TXT_BIBLU << "Supporting AVX instruction set? " << TXT_BIBLK << std::boolalpha << zcash::AVXEnabled() << TXT_NORML << std::endl;
-    std::cout << TXT_BIBLU << "Zcash SHA-256 autodetected implementation: " << TXT_BIBLK << zcash::SHA256AutoDetect() << TXT_NORML << std::endl;
+    std::cout << TXT_BIBLU "Supporting AVX instruction set? " TXT_BIBLK << std::boolalpha << zcash::AVXEnabled() << TXT_NORML "\n"
+              << TXT_BIBLU "Zcash SHA-256 autodetected implementation: " TXT_BIBLK << zcash::SHA256AutoDetect() << TXT_NORML << std::endl;
 
     // // Override autoselection of ZCash SHA-256 implementation
     // zcash::SHA256_selectDefault();   std::cout << TXT_BIBLU << "Zcash SHA-256 overridden implementation: " << TXT_BIBLK << "default" << std::endl;

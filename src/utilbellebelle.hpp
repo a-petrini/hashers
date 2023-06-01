@@ -26,9 +26,11 @@
 #endif
 
 template <typename T>
-void printShaOut(const std::vector<T> & data) {
-    for (const auto c : data) {
-        std::cout << std::setw(2) << std::setfill('0') << std::hex << (int) c << " ";
+void printShaOut(const std::vector<T> &data)
+{
+    for (const auto c : data)
+    {
+        std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(c);
     }
     std::cout << std::endl;
 }
