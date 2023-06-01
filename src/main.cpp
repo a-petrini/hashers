@@ -57,22 +57,8 @@ int main(int argc, char **argv)
         auto it(std::istreambuf_iterator<char>(std::cin));
         filebuffer.assign(it, {});
     }
-
-    // If a test file has been specified, run the benchmark
-    const bool doPerfTests{!filebuffer.empty()};
-
-    if (doPerfTests)
-    {
-        if (filebuffer.size() < 64)
-        {
-            std::cerr << TXT_BIRED << "Input data too small (min 64), exiting" << TXT_NORML << std::endl;
-            ::benchmark::Shutdown();
-            return -1;
-        }
-    }
     else
     {
-        // Added a \n to be compliant with the content of test.txt
         const std::string sample_data{"The quick brown fox jumps over the lazy dog\n"};
         filebuffer.insert(filebuffer.end(), sample_data.begin(), sample_data.end());
         std::cout << TXT_BIYLW << "No input specified, just running correctness test with dummy string" << TXT_NORML << std::endl;
@@ -132,7 +118,7 @@ int main(int argc, char **argv)
     std::cout << TXT_BICYA << "OpenSSL SHA-512: " << TXT_NORML;
     printShaOut(openSSLSha512Output);
 
-    if (doPerfTests)
+    if (filebuffer.size() >= 64)
     {
         std::cout << "\n" TXT_BIGRN << "Running performance test on input" << TXT_NORML << std::endl;
 
@@ -149,7 +135,6 @@ int main(int argc, char **argv)
         BENCHMARK(openssl_sha512_perf)->RangeMultiplier(2)->Range(64, filebuffer.size());
 
         ::benchmark::RunSpecifiedBenchmarks();
-        
     }
 
     EVP_MD_CTX_free(mdctx);
