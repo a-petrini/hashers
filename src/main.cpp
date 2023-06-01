@@ -56,16 +56,6 @@ int main(int argc, char **argv)
     {
         auto it(std::istreambuf_iterator<char>(std::cin));
         filebuffer.assign(it, {});
-        // std::vector<char>
-        //     buffer(std::istreambuf_iterator<char>(std::cin), {});
-
-        // auto& input_stream = std::cin;
-
-        // std::string line;
-        // while (std::getline(std::cin, line))
-        // {
-        //     filebuffer.insert(filebuffer.end(), line.begin(), line.end());
-        // }
     }
 
     // If a test file has been specified, run the benchmark
