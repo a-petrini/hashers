@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
+#include <functional>
 
 #include "common.h"
 #include "configuration.h"
@@ -44,11 +45,22 @@
 std::vector<char> filebuffer;
 EVP_MD_CTX *mdctx = nullptr;
 
+class Finally
+{
+public:
+    Finally(std::function<void()> f) : f_(std::move(f)) {}
+    ~Finally() { f_(); }
+
+private:
+    std::function<void()> f_;
+};
+
 int main(int argc, char **argv)
 {
 
     // Allow parsing of command line arguments for benchmark
     ::benchmark::Initialize(&argc, argv);
+    Finally cleanup([]() { ::benchmark::Shutdown(); });
 
     // Detect if a test file has been specified by redirecting input
     // Note !! Works only on POSIX systems
@@ -56,6 +68,11 @@ int main(int argc, char **argv)
     {
         auto it(std::istreambuf_iterator<char>(std::cin));
         filebuffer.assign(it, {});
+        if(filebuffer.size() < 64)
+        {
+            std::cout << TXT_BIRED "Error: " TXT_BIBLU "Input too small (min 64)" TXT_NORML << std::endl;
+            return 1;
+        }
     }
     else
     {
@@ -138,6 +155,5 @@ int main(int argc, char **argv)
     }
 
     EVP_MD_CTX_free(mdctx);
-    ::benchmark::Shutdown();
     return 0;
 }
