@@ -81,7 +81,6 @@ set(PERFTEST_SRC
 
 target_sources(hashers PRIVATE
   main.cpp
-  utilbellebelle.cpp
   ${COMMON_SRC}
   ${PERFTEST_SRC}
 )

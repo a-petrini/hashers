@@ -32,6 +32,3 @@ void printShaOut(const std::vector<T> & data) {
     }
     std::cout << std::endl;
 }
-
-std::vector<char> readBuffer(const std::string & filename);
-
