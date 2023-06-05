@@ -61,6 +61,7 @@ set(COMMON_SRC
   openssl_hashers.cpp
   zen_hashers.cpp
   zcash_hashers.cpp
+  openssl/digest.cpp
   zen/sha1.cpp
   zen/sha256.cpp
   zen/sha512.cpp

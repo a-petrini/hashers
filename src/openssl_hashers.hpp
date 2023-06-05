@@ -2,6 +2,8 @@
 
 #include <vector>
 
-#include "openssl/evp.h"
+#include "openssl/digest.hpp"
 
-std::vector<unsigned char> openssl_digest(const EVP_MD* md, EVP_MD_CTX* mdctx, const char* data, const size_t count);
+std::vector<unsigned char> openssl_sha1_hasher(const char *data, std::size_t len);
+std::vector<unsigned char> openssl_sha256_hasher(const char *data, std::size_t len);
+std::vector<unsigned char> openssl_sha512_hasher(const char *data, std::size_t len);

@@ -1,11 +1,25 @@
 #include "openssl_hashers.hpp"
 
-std::vector<unsigned char> openssl_digest(const EVP_MD *md, EVP_MD_CTX *mdctx, const char *data, const size_t count)
+std::vector<unsigned char> openssl_sha1_hasher(const char *data, size_t len)
 {
-    const size_t kDigestLength{static_cast<size_t>(EVP_MD_size(md))};
-    std::vector<unsigned char> output(kDigestLength);
-    EVP_DigestInit_ex2(mdctx, md, nullptr); // Already implies a reset
-    EVP_DigestUpdate(mdctx, data, count);
-    EVP_DigestFinal_ex(mdctx, output.data(), nullptr);
+    static openssl::CSHA1 hasher{};
+    std::vector<unsigned char> output(20);
+    hasher.Reset().Write(reinterpret_cast<const unsigned char *>(data), len).Finalize(output.data());
+    return output;
+}
+
+std::vector<unsigned char> openssl_sha256_hasher(const char *data, size_t len)
+{
+    static openssl::CSHA256 hasher{};
+    std::vector<unsigned char> output(32);
+    hasher.Reset().Write(reinterpret_cast<const unsigned char *>(data), len).Finalize(output.data());
+    return output;
+}
+
+std::vector<unsigned char> openssl_sha512_hasher(const char *data, size_t len)
+{
+    static openssl::CSHA512 hasher{};
+    std::vector<unsigned char> output(64);
+    hasher.Reset().Write(reinterpret_cast<const unsigned char *>(data), len).Finalize(output.data());
     return output;
 }

@@ -43,7 +43,6 @@
 
 // Naaaaa, mannaggia! Globali!
 std::vector<char> filebuffer;
-EVP_MD_CTX *mdctx = nullptr;
 
 class Finally
 {
@@ -66,7 +65,7 @@ int main(int argc, char **argv)
     // Note !! Works only on POSIX systems
     if (!isatty(fileno(stdin)))
     {
-        auto it(std::istreambuf_iterator<char>(std::cin));
+        auto it{std::istreambuf_iterator<char>(std::cin)};
         filebuffer.assign(it, {});
         if(filebuffer.size() < 64)
         {
@@ -120,18 +119,17 @@ int main(int argc, char **argv)
     printShaOut(zcashSha512Output);
 
     //////////////////
-    mdctx = EVP_MD_CTX_new();
 
     //// OpenSSL SHA-1 hasher
-    std::vector<unsigned char> openSSLSha1Output = openssl_digest(EVP_get_digestbyname("SHA1"), mdctx, filebuffer.data(), filebuffer.size());
+    std::vector<unsigned char> openSSLSha1Output = openssl_sha1_hasher(filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "OpenSSL SHA-1:   " << TXT_NORML;
     printShaOut(openSSLSha1Output);
     //// OpenSSL SHA-256 hasher
-    std::vector<unsigned char> openSSLSha256Output = openssl_digest(EVP_get_digestbyname("SHA256"), mdctx, filebuffer.data(), filebuffer.size());
+    std::vector<unsigned char> openSSLSha256Output = openssl_sha256_hasher(filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "OpenSSL SHA-256: " << TXT_NORML;
     printShaOut(openSSLSha256Output);
     //// OpenSSL SHA-512 hasher
-    std::vector<unsigned char> openSSLSha512Output = openssl_digest(EVP_get_digestbyname("SHA512"), mdctx, filebuffer.data(), filebuffer.size());
+    std::vector<unsigned char> openSSLSha512Output = openssl_sha512_hasher(filebuffer.data(), filebuffer.size());
     std::cout << TXT_BICYA << "OpenSSL SHA-512: " << TXT_NORML;
     printShaOut(openSSLSha512Output);
 
@@ -154,6 +152,5 @@ int main(int argc, char **argv)
         ::benchmark::RunSpecifiedBenchmarks();
     }
 
-    EVP_MD_CTX_free(mdctx);
     return 0;
 }
