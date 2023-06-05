@@ -194,6 +194,7 @@ void CSHA256::FinalizeNoPadding(unsigned char hash[OUTPUT_SIZE], bool enforce_co
 CSHA256& CSHA256::Reset()
 {
     bytes = 0;
+    memset(buf, 0, 64); // Also reset the buffer
     sha256::Initialize(s);
     return *this;
 }

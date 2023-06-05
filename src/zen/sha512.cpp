@@ -200,6 +200,7 @@ void CSHA512::Finalize(unsigned char hash[OUTPUT_SIZE])
 CSHA512& CSHA512::Reset()
 {
     bytes = 0;
+    memset(buf, 0, 128); // Also reset the buffer
     sha512::Initialize(s);
     return *this;
 }
