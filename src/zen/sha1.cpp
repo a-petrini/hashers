@@ -193,6 +193,7 @@ void CSHA1::Finalize(unsigned char hash[OUTPUT_SIZE])
 CSHA1& CSHA1::Reset()
 {
     bytes = 0;
+    memset(buf, 0, 64); // Also reset the buffer
     sha1::Initialize(s);
     return *this;
 }
